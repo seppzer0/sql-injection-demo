@@ -1,21 +1,31 @@
-FROM debian:bookworm-slim
+FROM postgres:16.1-alpine3.19
 
 WORKDIR /app
 COPY . /app
 
-# install packages
+# install packages;
+# NOTE: NeoVim is added for convenience.
 RUN \
-    apt update && \
-    apt install -y \
-        postgresql \
+    apk update && \
+    apk add \
         nano \
         neovim \
         gcc \
         g++ \
         cmake \
         python3 \
-        python3-pip
+        py3-pip \
+        runuser
 RUN python3 -m pip install psycopg --break-system-packages
 
+# prepare postgresql
 USER postgres
-CMD service postgresql start && psql -f db.sql && python3 /app/cmd.py
+RUN chmod 0700 /var/lib/postgresql/data &&\
+    initdb /var/lib/postgresql/data &&\
+    echo "host all  all    0.0.0.0/0  md5" >> /var/lib/postgresql/data/pg_hba.conf &&\
+    echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf &&\
+    pg_ctl start && \
+    psql -f db.sql && \
+    pg_ctl stop
+
+CMD pg_ctl start > /dev/null && python3 /app/cmd.py

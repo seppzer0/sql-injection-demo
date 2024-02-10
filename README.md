@@ -34,7 +34,7 @@ SQL injection: `Danny' UNION SELECT * FROM people WHERE isadmin = 'true`
 If you want to play around with this demo within the provided Docker container, you can use the following command in the root of the repository:
 
 ```sh
-docker run -it --rm --user root -v $(pwd):/app_debug -w /app_debug sql-injection-demo /bin/bash -c "service postgresql start && bash"
+docker run -it --rm -v $(pwd):/app_debug -w /app_debug sql-injection-demo /bin/sh -c "pg_ctl start && /bin/sh"
 ```
 
-Keep in mind that you would still need to run `psql -f db.sql` and `python3 cmd.py` commands manually, as a "postgres" user. Which can be achieved using the `su - postgres` command.
+This way you can edit the `cmd.py` (or any other source file) right in your text editor of choice on your host machine, and then test it immediately in the Docker container with a manual launch of the `python3 cmd.py` command.
