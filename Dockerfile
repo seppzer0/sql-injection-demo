@@ -10,17 +10,14 @@ RUN \
     apk add \
         nano \
         neovim \
-        gcc \
-        g++ \
-        cmake \
         python3 \
-        py3-pip \
-        runuser
+        py3-pip
 RUN python3 -m pip install psycopg --break-system-packages
 
 # prepare postgresql
 USER postgres
-RUN chmod 0700 /var/lib/postgresql/data &&\
+RUN \
+    chmod 0700 /var/lib/postgresql/data &&\
     initdb /var/lib/postgresql/data &&\
     echo "host all  all    0.0.0.0/0  md5" >> /var/lib/postgresql/data/pg_hba.conf &&\
     echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf &&\
