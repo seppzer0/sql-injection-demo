@@ -1,7 +1,7 @@
 import psycopg
 
 
-def launch(keyword: str) -> None:
+def main(keyword: str) -> None:
     """Check the name provided from user."""
     with psycopg.connect(dbname="postgres", user="postgres") as connect:
         with connect.cursor() as cur:
@@ -24,4 +24,4 @@ def launch(keyword: str) -> None:
 
 # launch the demo
 if __name__ == "__main__":
-    launch(input('\n[?] Please, enter person\'s name: '))
+    main(input('\n[?] Please, enter person\'s name: '))
