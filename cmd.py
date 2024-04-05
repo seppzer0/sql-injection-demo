@@ -24,4 +24,4 @@ def main(keyword: str) -> None:
 
 # launch the demo
 if __name__ == "__main__":
-    main(input('\n[?] Please, enter person\'s name: '))
+    main(input("\n[?] Please, enter person\'s name: "))
